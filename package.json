@@ -1,0 +1,53 @@
+{
+  "name": "vue2-moke-upload-ui",
+  "version": "0.1.0",
+  "description": "這是一個簡易的模擬上傳介面。",
+  "author": "traveltime1221",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/traveltime1221/vue2-moke-upload-ui.git"
+  },
+  "keywords": [
+    "vue2",
+    "vue-component",
+    "moke",
+    "upload",
+    "ui"
+  ],
+  "bugs": {
+    "url": "https://github.com/traveltime1221/vue2-moke-upload-ui/issues"
+  },
+  "homepage": "https://github.com/traveltime1221/vue2-moke-upload-ui#readme",
+  "type": "module",
+  "main": "dist/vue2-moke-upload-ui.umd.js",
+  "module": "dist/vue2-moke-upload-ui.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vue2-moke-upload-ui.esm.js",
+      "require": "./dist/vue2-moke-upload-ui.umd.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "devDependencies": {
+    "@rollup/plugin-buble": "^1.0.3",
+    "rollup": "^4.30.1",
+    "rollup-plugin-buble": "^0.19.8",
+    "rollup-plugin-css-only": "^4.5.2",
+    "rollup-plugin-vue": "^5.1.9",
+    "vue": "2.7.16",
+    "vue-template-compiler": "^2.7.16"
+  },
+  "peerDependencies": {
+    "vue": ">=2.6.0 <2.7.16",
+    "vue-template-compiler": ">=2.6.0 <2.7.16"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
