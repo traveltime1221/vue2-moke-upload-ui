@@ -1,36 +1,28 @@
-# vue2-btn
+# vue2-moke-upload-ui
 
-這是一個 Vue.js 按鈕元件，內建載入中的旋轉圖示與可自訂的圖示設計。
-透過 spinner 狀態自動在載入圖示與按鈕標籤/圖示之間切換，提供流暢的使用者體驗。
-元件特色包括：
+這是一個非常簡易的模擬上傳介面．
 
-* 動態圖示：可設定預設圖示（icon）與載入圖示（iconSpinner），支援 FontAwesome 或其他圖示類別。
-* 按鈕樣式：透過 btnClass 屬性輕鬆套用額外樣式，方便進行主題設計。
-* 禁用狀態：按鈕在載入中（spinner）或設為禁用（disabled）時自動進入不可用狀態。
-* 平滑過渡：內建 CSS 過渡效果，提供精緻的 UI 互動感受。
-* 此元件非常適合用於需要載入回饋的操作，例如表單提交或 API 呼叫。
-
-![範例](https://github.com/traveltime1221/vue2-btn/raw/main/src/assets/image/example.gif)
+![範例](https://github.com/traveltime1221/vue2-moke-upload-ui/raw/main/src/assets/image/example.gif)
 
 ## 安裝
 
 ### 環境
 ```
-vue: ">=2.6.0 <2.7.0"
-vue-template-compiler: ">=2.6.0 <2.7.0"
+vue: ">=2.6.0 <2.7.16"
+vue-template-compiler: ">=2.6.0 <2.7.16"
 node: ">=12.0.0"
 ```
 
 ### 安裝方式
 ```
-npm install vue2-btn
+npm install vue2-moke-upload-ui
 ```
 
 ### 解決安裝衝突
 如果專案包含 ESLint，安裝本套件時可能會遇到依賴衝突。
 可使用以下方法進行安裝處理：
 ```
-npm install vue2-btn --legacy-peer-deps
+npm install vue2-moke-upload-ui --legacy-peer-deps
 ```
 
 
@@ -41,10 +33,10 @@ npm install vue2-btn --legacy-peer-deps
 ```
 import Vue from "vue";
 import App from "./App.vue";
-import Button from "vue2-btn"; // 引用
+import MokeUploadUI from "vue2-moke-upload-ui"; // 引用
 
 Vue.config.productionTip = false;
-Vue.component("Button", Button); // 註冊
+Vue.component("MokeUploadUI", MokeUploadUI); // 註冊
 
 new Vue({
   render: (h) => h(App),
@@ -55,14 +47,12 @@ new Vue({
 ```
 <template>
   <div id="app">
-    <Button
-      btnClass='btn-primary'
-      name="查詢"
-      :spinner="spinner.search"
-      :disabled="spinner.search"
-      icon="fa fa-search mr-4"
-      iconSpinner="fa fa-circle-o-notch fa-spin"
-      @click="submit"
+    <MokeUploadUI
+      :icon="icon"
+      :maxFileSize="maxFileSize"
+      :uploadAPI="uploadAPI"
+      @uploadComplete="uploadComplete"
+      @uploadError="uploadError"
     />
   </div>
 </template>
@@ -70,22 +60,39 @@ new Vue({
 <script>
 export default {
   components: {
-    Button
+    MokeUploadUI
   },
   data () {
     return {
-      spinner: { // 模擬 loading
-        search: false
-      }
+      maxFileSize: 10 * 1024 * 1024,
+      icon: {
+            upload: {
+                type: '', // 圖片類型
+                path: '' // 圖片路徑
+            },
+            spinner: {
+                type: '',
+                path: ''
+            }
+        },
     }
   },
   methods: {
     // 模擬事件
-    submit () {
-      this.spinner.search = true
-        setTimeout(() => {
-          this.spinner.search = false
-        }, 3000)
+    uploadComplete () {
+        alert('上傳完成！')
+    },
+    uploadError () {
+        alert('上傳失敗！請重新選擇檔案！')
+    },
+    uploadAPI (file) {
+        console.log('-- uploadAPI --')
+        return new Promise((resolve, reject) => {
+            console.log('模擬上傳檔案：', file.name);
+            setTimeout(() => {
+                Math.random() > 0.2 ? resolve('模擬上傳成功') : reject(new Error('模擬上傳失敗'));
+            }, 2000); // 模擬 2 秒延遲
+        });
     }
   }
 }
@@ -95,55 +102,72 @@ export default {
 ### 局部
 ```
 <template>
-  <div id="app">
-    <Button
-      btnClass='btn-primary'
-      name="查詢"
-      :spinner="spinner.search"
-      :disabled="spinner.search"
-      icon="fa fa-search mr-4"
-      iconSpinner="fa fa-circle-o-notch fa-spin"
-      @click="submit"
-    />
-  </div>
+    <div class="container">
+        <div class="file-uploader-content">
+            <MokeUploadUI
+                :icon="icon"
+                :maxFileSize="maxFileSize"
+                :uploadAPI="uploadAPI"
+                @uploadComplete="uploadComplete"
+                @uploadError="uploadError"
+            />
+        </div>
+    </div>
 </template>
 
 <script>
-import Button from "vue2-btn"; // 引用
+import 'font-awesome/css/font-awesome.min.css'; // 如果是引用外部Icon套件
+import MokeUploadUI from '@/components/MokeUploadUI'
 export default {
-  name: "App",
-  components: {
-    Button, // 於此註冊
-  },
-  data () {
-    return {
-      spinner: { // 模擬 loading
-        search: false
-      }
+    components: {
+        MokeUploadUI
+    },
+    data () {
+        return {
+            icon: {
+                upload: {
+                    type: 'string',
+                    path: 'fa fa-cloud-upload'
+                },
+                spinner: {
+                    type: 'string',
+                    path: 'fa fa-spinner fa-spin'
+                }
+            },
+            maxFileSize: 10 * 1024 * 1024
+        }
+    },
+    methods: {
+        uploadComplete () {
+            alert('上傳完成！')
+        },
+        uploadError () {
+            alert('上傳失敗！請重新選擇檔案！')
+        },
+        uploadAPI (file) {
+            // 此處為模擬上傳檔案, 可實際串接 API
+            return new Promise((resolve, reject) => {
+                console.log('模擬上傳檔案：', file.name);
+                setTimeout(() => {
+                    Math.random() > 0.2 ? resolve('模擬上傳成功') : reject(new Error('模擬上傳失敗'));
+                }, 2000); // 模擬 2 秒延遲
+            });
+        }
     }
-  },
-  methods: {
-    // 模擬事件
-    submit () {
-      this.spinner.search = true
-        setTimeout(() => {
-          this.spinner.search = false
-        }, 3000)
-    }
-  }
-};
-</script>
+}
+
+
 ```
 
 ## 屬性
 |  參數 | 類型 | 描述 | 
 | -------- | -------- | -------- | 
-| disabled    | Boolean     |  禁用按鈕狀態, 預設：false   | 
-| spinner    | Boolean     | 平滑過渡, 預設：false    |
-| name    | String     | 按鈕名稱, 預設：空值  | 
-| icon    | String     | 按鈕icon, 預設：空值 | 
-| iconSpinner    | String     | 平滑過渡 class 名稱, 預設：使用fontawesome 的 fa fa-spinner fa-spin | 
-| btnClass    | String     | 按鈕 class 名稱, 預設：空值|
+| icon    | Json     |  顯示上傳 Icon 及 Loading 畫面, 預設不顯示   | 
+| maxFileSize | Number | 上傳檔案限制大小 |
+| uploadAPI | Function | 上傳API function |
+| uploadComplete | Function | 上傳完成回應 ｜
+| uploadError | Function | 上傳錯誤回應 ｜
+
 
 ## 版本歷程
 
