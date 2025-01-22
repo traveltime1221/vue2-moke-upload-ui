@@ -17,7 +17,7 @@
                   </div>
                   <div>
                       <span>
-                          {{ upload.fileName || "匯入檔案" }}
+                          {{ upload.fileName || "選擇檔案或將檔案拖曳至此處" }}
                       </span>
                   </div>
               </div>
@@ -103,9 +103,8 @@ export default {
           const file = event.dataTransfer.files[0];
           if (file) this.onFileSelect({ target: { files: [file] } });
       },
-      onDragLeave () {
-          console.log('拖曳離開')
-      },
+      onDragOver () {},
+      onDragLeave () {},
       async submit () {
           if (!this.upload.selectedFile) return;
           this.upload.isUploading = true
@@ -115,6 +114,7 @@ export default {
               this.init()
           } catch (error) {
               this.$emit('uploadError', error);
+              this.init()
           }
       }
   }
