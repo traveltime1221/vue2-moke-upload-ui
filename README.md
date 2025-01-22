@@ -86,7 +86,7 @@ export default {
         alert('上傳失敗！請重新選擇檔案！')
     },
     uploadAPI (file) {
-        console.log('-- uploadAPI --')
+        // 此處為模擬上傳檔案, 可實際串接 API
         return new Promise((resolve, reject) => {
             console.log('模擬上傳檔案：', file.name);
             setTimeout(() => {
