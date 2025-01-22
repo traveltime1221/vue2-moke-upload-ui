@@ -1,6 +1,6 @@
 # vue2-moke-upload-ui
 
-這是一個非常簡易的模擬上傳介面．
+這是一個簡易的模擬上傳介面,可以實際串接API．
 
 ![範例](https://github.com/traveltime1221/vue2-moke-upload-ui/raw/main/src/assets/image/example.gif)
 
@@ -155,7 +155,6 @@ export default {
         }
     }
 }
-
 
 ```
 
